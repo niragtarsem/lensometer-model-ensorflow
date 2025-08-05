@@ -1,0 +1,584 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* section.main-wrapper {
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/login-screen.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding: 160px 53px 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.logo-wrap {
+    text-align: center;
+    /* margin-bottom: 40px; */
+}
+
+.row-login {
+    background-color: #fff;
+    padding: 24px 29px 30px;
+    border-radius: 10px;
+}
+
+form.form-login input {
+    color: #B9B2B2;
+    font-size: 13px;
+    border: none;
+    border-bottom: 1px solid #D1D1D1;
+    padding: 0px 0px 7px;
+    outline: none;
+    width: 100%;
+}
+
+form.form-login input::placeholder {
+    color: #B9B2B2;
+}
+
+input.name-input {
+    margin-bottom: 13px;
+}
+
+.qr-code-wrap {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+/* button.submit-btn,
+.veri-fy-btn {
+    border: none;
+    margin-top: 25px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    width: 100%;
+    padding: 12px 12px;
+    background: rgb(65, 83, 169);
+    background: linear-gradient(90deg, rgba(65, 83, 169, 1) 32%, rgba(73, 156, 163, 1) 60%);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* generate code */
+.generate-code-wrap {
+    max-width: 1050px;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/otp.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 53px 240px;
+    position: relative;
+}
+
+.generate-code-wrap .back-wrap {
+    display: none;
+}
+
+
+.inner-code {
+    max-width: 260px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.generate-wrap {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 42px 29px;
+}
+
+h6#otp-text {
+    display: none;
+}
+
+.inputfields-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .inputfields-wrap input {
+    border: none;
+    border-bottom: 3px solid #D9D9D9;
+    max-width: 30px;
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+} */
+
+button.otp-btn {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 13px;
+    color: #B9B2B2;
+    padding: 0;
+}
+
+.resend-wrap {
+    text-align: end;
+    margin-top: 16px;
+}
+
+/* generate code */
+/* otp */
+section.generate-otp-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    background-image: url("../public/images/Generate-code-scan.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 53px 240px;
+    position: relative;
+}
+
+h6.hdng-otp {
+    text-align: center;
+    color: #499CA3;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.otp-wrap {
+    padding: 18px 26px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.veri-fy-btn {
+    display: none;
+}
+
+/* otp */
+/* scanning */
+h6.hdng-scan {
+    color: #499CA3;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.generate-code-scan {
+    max-width: 480px;
+    margin: 0 auto;
+    background-image: url("../public/images/Generate-code-scan.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 53px 240px;
+    position: relative;
+}
+
+.back-wrap i {
+    color: #CCD2E3;
+}
+
+.back-wrap {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.back-wrap a {
+    display: flex;
+}
+
+.scanning-wrap.text-center {
+    padding-top: 100px;
+    padding-bottom: 10px;
+}
+
+/* scanning */
+/* screen otp */
+.generate-screnotp-wrap {
+    max-width: 1050px;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/otp-Screen.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 53px 40px;
+    position: relative;
+}
+
+.test-hdng {
+    text-align: center;
+    color: #100162;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.img-wrapper img {
+    max-width: 100%;
+    width: 620px;
+}
+
+/* screen otp */
+/* lensometer */
+.lensometer-wrap {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/lensometer.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding: 90px 53px 30px;
+    position: relative;
+}
+
+.lenso-img {
+    padding: 30px 30px;
+    border: 1px solid #000000;
+    max-width: 268px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.lenso-img>img {
+    max-width: 200px;
+    height: 200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* lensometer */
+/* download report */
+.download-wrap {
+    padding: 24px 26px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.download-wrap p {
+    font-size: 14px;
+}
+
+.pt-text h5 {
+    color: #100162;
+}
+
+.upper-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 16px;
+    background-color: #D9D9D9;
+    align-items: center;
+}
+
+.upper-wrap:first-child p {
+    color: #100162;
+    font-weight: 700;
+}
+
+.progress-wrapp .progress {
+    height: 10px;
+    background-color: #D9D9D9;
+    border-radius: 6px;
+}
+
+.progress-wrapp .progress .progress-bar {
+    background-color: #499CA3;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.progress-wrapp {
+    margin-top: 18px;
+}
+
+.report-wrapper {
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/login-screen.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 53px 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* download report */
+/* final report */
+.final-wrapper {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    background-image: url("../public/images/lenso.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    padding: 160px 38px 60px;
+    position: relative;
+}
+
+.upper-wrap:first-child {
+    margin-bottom: 14px;
+}
+
+.ctitle {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    margin: 20px 0px;
+    color: #100162;
+}
+
+.price-wrap {
+    text-align: center;
+}
+
+.innr-wrap {
+    text-align: center;
+}
+
+.price-wrap span {
+    display: block;
+}
+
+.price-wrap span:first-child {
+    font-size: 13px;
+    color: #100162;
+    margin-bottom: 2px;
+}
+
+.price-wrap span:last-child {
+    font-size: 13px;
+    font-weight: 700;
+    color: #100162;
+    margin-bottom: 1rem;
+    margin-top: 0px;
+}
+
+.all-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+p.mrp-wrap span {
+    font-size: 14px;
+    color: #100162;
+}
+
+button.view-all {
+    border: none;
+    background-color: transparent;
+    color: #100162;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+.home-demo {
+    text-align: center;
+}
+
+.desc-laimer h6 {
+    color: #008001;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.desc-laimer p {
+    color: #008001;
+    font-weight: 500;
+}
+
+form.feedback-form label {
+    color: #100162;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+form.feedback-form textarea {
+    width: 100%;
+    background-color: rgb(196, 196, 196, 0.3);
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    padding: 9px 12px;
+}
+
+button.submit-btn2 {
+    border: none;
+    padding: 7px 31px;
+    background: rgb(65, 83, 169);
+    background: linear-gradient(90deg, rgba(65, 83, 169, 1) 32%, rgba(73, 156, 163, 1) 60%);
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.text-areawrap {
+    margin-bottom: 20px;
+}
+
+.innr-wrap img {
+    border-radius: 60px;
+    object-fit: cover;
+    margin-bottom: 22px;
+}
+
+form.feedback-form {
+    margin-top: 25px;
+}
+
+.detail-text {
+    color: #100162;
+}
+
+.detail-wrap {
+    margin: 20px 0px;
+}
+
+.desc-text {
+    color: #100162;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+/* final report */
+/* responsive */
+@media screen and (max-width: 1024px) {
+    
+}
+
+@media screen and (max-width: 992px) {
+    .lensometer-wrap {
+        padding: 40px 53px 30px;
+    }
+    /* .logo-wrap {
+        margin-bottom: 140px;
+    } */
+    .lenso-img {
+        padding: 16px 16px;
+        max-width: 214px;
+    }
+
+    .lenso-img > img {
+        max-width: 180px;
+        height: 150px;
+    }
+    .test-hdng {
+        margin-bottom: 14px;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    .test-hdng {
+        margin-bottom: 12px;
+    }
+
+    /* .logo-wrap {
+        margin-bottom: 140px;
+    } */
+}
+
+@media screen and (max-width: 480px) {
+    .generate-code-wrap {
+        max-width: unset;
+        background-image: url("../public/images/Generate-code-scan.png");
+        padding: 130px 18px 160px;
+    }
+
+    .generate-wrap {
+        padding: 18px 26px;
+    }
+
+    h6#otp-text {
+        display: block;
+    }
+
+    .generate-code-wrap .back-wrap {
+        display: block;
+    }
+
+    .veri-fy-btn {
+        display: block;
+    }
+
+    button#code-btn {
+        display: none;
+    }
+
+    .lenso-img {
+        padding: 60px 30px;
+        max-width: unset;
+    }
+
+    .lenso-img img {
+        max-width: 120px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .inner-code {
+        max-width: unset;
+    }
+
+    .lenso-img img {
+        max-width: 100px;
+    }
+
+    .lensometer-wrap {
+        max-width: unset;
+        padding: 130px 30px 60px;
+    }
+
+    form.feedback-form textarea {
+        height: 130px;
+    }
+
+    .final-wrapper {
+        max-width: unset;
+        padding: 20px 20px 60px;
+    }
+
+    section.main-wrapper {
+        max-width: unset;
+        height: 100%;
+        padding: 130px 30px 130px;
+    }
+
+    .report-wrapper {
+        max-width: unset;
+        height: 100%;
+        padding: 130px 20px 130px;
+    }
+
+    .row-login {
+        padding: 18px 15px 30px;
+    }
+}
+
+@media screen and (max-width: 480) and (min-width: 320px) {
+    .generate-code-wrap {
+        max-width: unset;
+    }
+}

@@ -1,0 +1,36 @@
+.video-processing-camera {
+    /* padding: 0px 0px 0px; */
+    /* margin-top: -50px; */
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+}
+.video-processing-camera h5 {
+    font-size: 18px;
+    color: #100162;
+}
+
+.logo-wrap.gif-wrap {
+    padding: 15px 20px 15px;
+}
+.inner-distance {
+    position: relative;
+    margin-bottom: 21px;
+}
+p.error-req {
+    color: red;
+    font-weight: 500;
+}
+
+.fetching-report-pending-message img {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+/* .distance-wrap {
+    padding: 12px 27px 0px;
+} */
+
+
+.camera-wrapp {
+    padding: 12px 27px 0px;
+}

@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+.inner-lenso-screen {
+    max-width: 590px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+section.lensor-wrap {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding: 30px 53px 120px;
+    position: relative;
+}
+.lenso-test-main {
+    border: 2px solid #6db0b5;
+    width: 617px;
+    float: left;
+    margin-bottom: 15px;
+}
+.logo-wrap {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+h6.lenso-hdng {
+    text-align: center;
+    color: #100162;
+    font-size: 18px;
+    margin-top: 25px;
+}
+.lenso-test-distance {
+    padding: 20px 20px;
+    width: 590px;
+    margin-left: 12px;
+    margin-right: 14px;
+    float: left;
+}
+.both-wrapper .start-one {
+    width: 75.5905511811px;
+    height: 75.5905511811px;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6db0b5;
+}
+.trioimg {
+    margin-bottom: 165px;
+}
+.start-one .circlewrap {
+    width: 68.031496063px;
+    height: 68.031496063px;
+    background-color: #000;
+    border-radius: 50%;
+}
+.both-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 75.5905511811px;
+}
+.prev-wrap {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+.prev-wrap a {
+    display: flex;
+}
+.prev-wrap a i {
+    color: #CCD2E3;
+}

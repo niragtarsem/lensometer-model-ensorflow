@@ -1,0 +1,266 @@
+/* @font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-MediumItalic.woff2') format('woff2'),
+        url('EuclidCircularB-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-Regular.woff2') format('woff2'),
+        url('EuclidCircularB-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-LightItalic.woff2') format('woff2'),
+        url('EuclidCircularB-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-Italic.woff2') format('woff2'),
+        url('EuclidCircularB-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-Light.woff2') format('woff2'),
+        url('EuclidCircularB-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-BoldItalic.woff2') format('woff2'),
+        url('EuclidCircularB-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-Medium.woff2') format('woff2'),
+        url('EuclidCircularB-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-Bold.woff2') format('woff2'),
+        url('EuclidCircularB-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-SemiBold.woff2') format('woff2'),
+        url('EuclidCircularB-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular B';
+    src: url('EuclidCircularB-SemiBoldItalic.woff2') format('woff2'),
+        url('EuclidCircularB-SemiBoldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+} */
+
+* {
+    box-sizing: border-box;
+    font-family: 'Euclid Circular B';
+    margin: 0;
+    font-family: 'Euclid Circular B';
+    /* src: url('EuclidCircularB-SemiBoldItalic.woff2') format('woff2'),
+        url('EuclidCircularB-SemiBoldItalic.woff') format('woff'); */
+}
+
+body {
+    margin: 0;
+}
+
+html,
+body,
+section,
+.conatiner {
+    height: 100%;
+}
+div#__next, .containeru {
+    height: 100%;
+}   
+
+.code-wrap h6 {
+    font-size: 25px;
+    color: #00898f;
+    font-weight: 700;
+}
+
+section.main-wrapper {
+    padding: 0px 0px 0px;
+    position: relative;
+    height: 100%;
+    /* background-image: url("../images/login-fff.png"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+section.main-wrapper .row .col-md-6 {
+    height: 100%;
+}
+
+section.main-wrapper .row .col-md-6:last-child {
+    padding-right: 0px;
+}
+
+section.main-wrapper .row {
+    height: 100%;
+}
+
+.logowrap {
+    margin-bottom: -40px;
+    text-align: center;
+    width: 100%;
+    z-index: 11;
+}
+
+.caption-top p {
+    color: rgba(88, 88, 88, 1);
+    font-weight: 400;
+}
+
+.caption-top {
+    margin-bottom: 24px;
+}
+
+.otp-input-fields input {
+    border-bottom: 2px solid #00898f !important;
+    border: none;
+    max-width: 70px;
+    font-size: 22px;
+    width: 100%;
+    color: #000000 !important;
+    background-color: transparent;
+    outline: none;
+    text-align: center;
+    height: 30px;
+    font-weight: 700;
+}
+
+.code-wrap p a {
+    display: block;
+    text-decoration: none;
+    color: #015790;
+    font-weight: 500;
+    text-align: center;
+}
+
+.precisewrap {
+    background-color: #89c8cb;
+    border: 1px solid #ffffff85;
+    padding: 60px 20px 0px;
+    border-radius: 46px;
+}
+
+.doctorwrap img {
+    margin-right: -90px;
+    margin-top: -45px;
+    max-width: 260px;
+    width: 100%;
+}
+
+.code-wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper {
+    background-image: url("../public/images/web_images/bg-desktop.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 40px 90px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.precisewrap p {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.logowrap img {
+    max-width: 80px;
+    width: 100%;
+}
+
+section.main-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    background-image: url("../public/images/web_images/Vector-fff.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+}
+
+section.main-wrapper::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    bottom: 40px;
+    background-image: url("../public/images/web_images/Vector-notfff.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 75px;
+    height: 100px;
+}
+
+/* media-query start */
+@media screen and (max-width: 992px) {
+    .logo-wrapper {
+        padding: 40px 40px;
+
+    }
+
+    .doctorwrap img {
+        margin-right: -60px;
+        margin-top: -20px;
+        max-width: 220px;
+    }
+
+    .precisewrap p {
+        font-size: 18px;
+    }
+
+}

@@ -1,0 +1,145 @@
+.generate-screnotp-wrap {
+    height: 100vh;
+    padding: 20px 53px 20px;
+}
+.logo-wrap {
+    margin-bottom: 10px;
+}
+.img-wrapper img {
+    width: 450px;
+}
+.lensometer-wrap {
+    padding: 10px 53px 30px;
+}
+.lenso-img>img {
+    max-width: 157px;
+    height: 177px;
+    width: 100%;
+    margin: 0 auto;
+}
+.triangle-wrap div img {
+    max-width: 60px;
+    rotate: 30deg;
+}
+.triangle-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 688px;
+    margin: 0 auto 20px;
+    width: 100%;
+}
+.triangle-wrap.btm-trio {
+    margin-top: 20px;
+}
+.inner-code-screen {
+    position: relative;
+}
+div#trio-wrapp {
+    position: absolute;
+    left: 29%;
+    top: 66%;
+    transform: translateY(-50%);
+    max-width: 505px;
+    margin: 0 auto;
+}
+.triangle-lenso {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 688px;
+    margin: 0 auto 10px;
+    width: 100%;
+}
+.triangle-lenso div img {
+    max-width: 60px;
+    rotate: 30deg;
+}
+div#trio-lenso {
+    position: absolute;
+    left: 20%;
+    top: 66%;
+    transform: translateY(-50%);
+    max-width: 570px;
+    margin: 0 auto;
+}
+.img-wrapper img {
+    width: 378px;
+}
+div#mt-wrap {
+    margin-top: 30px;
+}
+.img-wrapper img {
+    padding: 10px 3px 0px;
+    border: 1px dashed #000;
+    border-top-left-radius: 190px;
+    border-top-right-radius: 190px;
+    border-bottom: 0px;
+}
+.top-img-trio div img {
+    max-width: 40px;
+    text-align: center;
+}
+.max-wrapimg img {
+    max-width: 40px;
+}
+div#center-boxwrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 458px;
+    margin: 0 auto;
+}
+.lenso-img-wrap {
+    padding: 30px 30px;
+    border: 1px solid #000000;
+    max-width: 268px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+}
+.lenso-img-wrap img {
+    max-width: 157px;
+    height: 177px;
+    width: 100%;
+    margin: 0 auto;
+}
+.max-wrapimg.left-tioimg {
+    margin-right: 10px;
+}
+.max-wrapimg.right-tioimg {
+    margin-left: 10px;
+}
+.top-trioimg {
+    margin-bottom: 40px;
+}
+.max-wrapimg.bottom-tioimg {
+    text-align: center;
+    margin-top: 50px;
+}
+/* 02 */
+.demo-topwrap img {
+    max-width: 40px;
+    text-align: center;
+}
+.left-demoimg img, .right-demoimg img, .bottom-demoimg img {
+    max-width: 40px;
+}
+.center-demo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.left-demoimg {
+    margin-right: 40px;
+}
+.right-demoimg {
+    margin-left: 40px;
+}
+.demo-topwrap {
+    margin-bottom: 40px;
+}
+.bottom-demoimg {
+    text-align: center;
+    margin-top: 30px;
+}

@@ -1,0 +1,20 @@
+.final-wrapper {
+    width: 575px;
+    padding: 80px 38px 60px;
+}
+.logo-wrap {
+    margin-bottom: 70px;
+}
+button.submit-btn2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.final-wrapper {
+    background-image: url('../public/images/lensometer-report-background.png');
+}
+@media screen and (max-width: 480px) {
+    .final-wrapper {
+        width: unset;
+    }
+}

@@ -1,0 +1,135 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+.inner-lenso-screen {
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    display: block;
+    justify-content: start;
+}
+.wrap-side {
+    padding-right: 60px;
+    padding-bottom: 109px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+.top-wrap {
+    width: 100%;
+}
+.trio-wrap {
+    margin-bottom: 350px;
+    /* float: right; */
+    width: 100%;
+}
+section.lensor-wrap {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding: 30px 53px 120px;
+    position: relative;
+    background-color: #82d6e7;
+}
+.logo-wrap {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.logo-wrapp img {
+    max-width: 74px;
+}
+.trioimg {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 80px solid #000;
+}
+.trioimg {
+    float:right;
+}
+h6.lenso-hdng {
+    text-align: center;
+    color: #100162;
+    font-size: 18px;
+    margin-top: 15px;
+}
+.lenso-test-distance {
+    padding: 60px 60px 90px;
+    border: 5px solid #000000;
+    padding-top:24px;
+    padding-right: 12px
+}
+.logo-wrapp-right {
+    position: absolute;
+    right: 20px;
+    bottom: 2px;
+    width:10%;
+}
+.both-wrapper .start-one {
+    width: 75.5905511811px;
+    height: 75.5905511811px;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+.trainlewrap {
+    margin-bottom: 170px;
+}
+.start-one .circlewrap {
+    width: 60.031496063px;
+    height: 60.031496063px;
+    background-color: red;
+    border-radius: 50%;
+}
+.both-wrapper .start-one {
+    background-color: #000;
+}
+.start-one.second-one {
+    background-color: #000;
+}
+
+.circlewrap.left-box {
+    background: #fff;
+}
+/* .circlewrap.left-box {
+    background-color: #22B14c;
+}
+.circlewrap.right-box {
+    background-color: #00008B;
+} */
+.both-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 75.5905511811px;
+}
+.both-in-one {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 610px;
+}
+.prev-wrap {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+.prev-wrap a {
+    display: flex;
+}
+.prev-wrap a i {
+    color: #CCD2E3;
+}

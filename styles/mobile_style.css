@@ -1,0 +1,408 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    line-height: normal;
+}
+ ol, ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    list-style: none;
+    padding-left: 0;
+}
+html, body{
+    height: 100%;
+}
+div#__next {
+    height: 100%;
+}
+section.main-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    /* padding: 20px; */
+    /* background-image: url("../images/Screen-login.png");
+    background-repeat: no-repeat;
+    background-size: cover; */
+    height: 100%;
+    position: relative;
+}
+
+section.main-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 25px;
+    top: 20px;
+    transform: translateX(-50%);
+    background-image: url("../public/images/mobile_images/Vector-a.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 50px;
+    height: 80px;
+}
+.inner-div {
+    height: 100%;
+}
+.logo-wrap {
+    text-align: center;
+    background-image: url("../public/images/mobile_images/Screen-login.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 70px 20px;
+}
+.logo-wrap a img {
+    max-width: 80px;
+    width: 100%;
+    margin: 0 auto;
+}
+.bottomwrap {
+    background-color: #fff;
+    padding: 40px 30px;
+    margin-top: -35px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    height: 100%;
+    position: relative;
+}
+.outer-wrap {
+    height: 100%;
+    position: relative;
+}
+.outer-wrap::after {
+    content: "";
+    position: absolute;
+    right: -32px;
+    bottom: 90px;
+    transform: translateX(-50%);
+    background-image: url("../public/images/mobile_images/Vector-b.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 65px;
+    height: 80px;
+}
+.bottomwrap h6 {
+    color: #015790;
+    font-size: 18px;
+}
+.bottomwrap > p {
+    color: #585858;
+    font-size: 16px;
+    line-height: normal;
+}
+form.form-login input {
+    border: 1px solid #E2E8F0;
+    width: 100%;
+    padding: 9px 9px 9px 50px;
+    border-radius: 50px;
+    outline: none;
+    font-size: 14px;
+    line-height: normal;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #64748B;
+    font-weight: 400;
+}
+form.form-login .ant-input:focus, form.form-login .ant-input:hover  {
+    border-color: #E2E8F0 !important;
+    box-shadow: none !important;
+}
+.inputwrap img {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 17px;
+    height: 17px;
+    z-index: 9;
+}
+.hdngwrap {
+    margin-bottom: 45px;
+}
+.inputwrap {
+    position: relative;
+}
+form.form-login input::placeholder {
+    color: #64748B;
+}
+button.btnn-next {
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    background: rgb(1,62,102);
+    background: linear-gradient(90deg, rgba(1,62,102,1) 47%, rgba(1,87,144,1) 77%);
+    color: #fff;
+    font-weight: 500;
+    border-radius: 50px;
+    height: 40px;
+    font-size: 14px;
+}
+.next-btn {
+    margin-top: 40px;
+}
+/* otp */
+.otp-input-fields input {
+    border-bottom: 2px solid #00898f;
+    max-width: 56px;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-top: 1px solid transparent;
+    font-size: 22px;
+    width: 100%;
+    box-shadow: none;
+    color: #000000;
+    background-color: transparent;
+    outline: none;
+    text-align: center;
+    height: 30px;
+    border-radius: 0;
+    font-weight: 700;
+}
+.otp-input-fields input:hover,  .otp-input-fields input:focus{
+    box-shadow: none;
+    border-color: #00898f;
+    outline: none;
+}
+button.ant-btn.submit-btn {
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    background: rgb(1, 62, 102);
+    background: linear-gradient(90deg, rgba(1, 62, 102, 1) 47%, rgba(1, 87, 144, 1) 77%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 50px;
+    height: 40px;
+}
+.wrap-submit {
+    margin-top: 50px;
+}
+/* OTP end */
+/* code verify */
+.verify-btn a.verify-code {
+    text-decoration: none;
+    padding: 6px 18px;
+    background-color: #46B881;
+    border-radius: 8px;
+    color: #fff;
+    display: block;
+    max-width: 263px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+a.verify-code span {
+    font-size: 16px;
+    font-weight: 600;
+}
+/* code verify */
+/* popup */
+.popup-wrapper::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: black;
+    opacity: 0.4;
+    visibility: visible;
+    z-index: 9;
+}
+.popup-wrapper {
+    position: relative;
+}
+.dialog-wrapper {
+    max-width: 317px;
+    margin: 0 auto;
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    background-color: #fff;
+    z-index: 11;
+    padding: 20px;
+    transform: translateX(-50%);
+    width: 100%;
+    border-radius: 8px;
+    text-align: center;
+}
+.inner-dialog > img {
+    max-width: 31px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.inner-dialog h5 {
+    color: #00898F;
+    font-size: 22px;
+}
+/* popup */
+/* steps */
+.hdngwrap h5 {
+    text-align: center;
+    color: #015790;
+    font-size: 22px;
+    margin-bottom: 25px;
+}
+.lines-ideal {
+    text-align: center;
+}
+.lines-ideal img {
+    max-width: 310px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.number-wrap > span {
+    width: 40px;
+    height: 40px;
+    background-color: #015790;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.number-wrap {
+    max-width: 60px;
+}
+.number-wrap span {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+.textwrap p {
+    color: #015790;
+    font-size: 18px;
+    /* font-weight: 500; */
+}
+li.li-list {
+    display: flex;
+    align-items: center;
+    padding: 15px 15px;
+    background-color: #fff;
+    box-shadow: rgb(1 87 144 / 9%) 0px 8px 24px;
+    border-radius: 8px;
+}
+section.step-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+}
+/* steps */
+/* distance */
+.distance-wrap img {
+    max-width: 100%;
+    margin: 0 auto;
+    width: 412px;
+}
+.slight-hdng h5 {
+    color: #FFAD0E;
+    font-size: 20px;
+}
+.slight-hdng > p {
+    font-size: 15px;
+    color: #015790;
+}
+.slight-hdng img {
+    margin-top: 20px;
+}
+.slight-hdng {
+    margin-top: 30px;
+}
+/* distance */
+/* report */
+.detail-wrap > p {
+    color: #015790;
+    text-align: center;
+}
+p.detail-text {
+    color: #015790;
+    font-weight: 500;
+}
+.upper-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 16px;
+    background-color: #f4f4f4;
+    align-items: center;
+}
+.upper-wrap  p {
+    color: #015790;
+    width: 100%;
+}
+.upper-wrap  p b {
+    color: #015790;
+    font-weight: 700;
+}
+.upper-wrap:first-child p {
+    color: #015790;
+    font-weight: 700;
+}
+
+.desc-text {
+    color: #015790;
+    font-weight: 600;
+    font-size: 17px;
+}
+.desc-laimer {
+    margin-top: 20px;
+}
+.desc-laimer p {
+    color: #015790;
+}
+.text-areawrap label.ant-form-item-required {
+    color: #015790;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+.text-areawrap textarea {
+    width: 100%;
+    border: 1px solid #dddcdc;
+    border-radius: 8px;
+    outline: none;
+    padding: 6px 12px;
+    color: #015790;
+}
+.text-areawrap textarea.ant-input:hover, 
+.text-areawrap textarea.ant-input:focus{
+    border: 1px solid #dddcdc;
+    box-shadow: none;
+    outline: none;
+}
+button.submitwrap-btn {
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    background: rgb(1, 62, 102);
+    background: linear-gradient(90deg, rgba(1, 62, 102, 1) 47%, rgba(1, 87, 144, 1) 77%);
+    color: #fff;
+    font-weight: 500;
+    border-radius: 50px;
+    height: 40px;
+}
+/* report */
+
+
+/* media query start */
+@media screen and (max-width: 425px) {
+    section.main-wrapper {
+        max-width: 100%;
+    }
+    .textwrap p {
+        font-size: 16px;
+    }
+    .number-wrap > span {
+        width: 35px;
+        height: 35px;
+    }
+    .number-wrap span {
+        font-size: 16px;
+    }
+    .bottomwrap {
+        padding: 40px 22px;
+    }
+}

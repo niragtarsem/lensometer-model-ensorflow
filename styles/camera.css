@@ -1,0 +1,233 @@
+.good-wrap > p {
+    display: none;
+    background-color: green;
+        color: #fff;
+        padding: 2px;
+        font-weight: 600;
+        max-width: 195px;
+    text-align: center;
+}
+.fetching-report-pending-message h2 {
+    color: #499CA3;
+    font-size: 18px;
+    text-align: center;
+}
+p.cyl-sph-count {
+    color: #499CA3;
+    font-size: 18px;
+    font-weight: 500;
+}
+.camera-spiner {
+    text-align: center;
+    /* padding-bottom: 6px; */
+}
+.good-wrap  p.error-req {
+    background-color: red;
+    max-width: unset;
+}
+
+span.custom-title {
+    font-size: 25px;
+    color: #015790;
+}
+h2.camera-hdng {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #015790;
+}
+span.count-hdng {
+    font-size: 20px;
+    font-weight: 500;
+    color: red;
+    text-align:center;
+}
+div#swal2-html-container {
+    font-size: 16px;
+    color: #000;
+}
+p.success_distance_msg.mb-0 {
+    max-width: 100%;
+    font-weight: 500;
+    padding: 5px 7px;
+}
+p.mobile-distance-text {
+    color: #015790;
+    font-size: 16px;
+    font-weight: 500;
+    padding-top: 28px;
+}
+p.glass-distance-text {
+    color: #015790;
+    font-size: 16px;
+    font-weight: 500;
+}
+/* 12june */
+.mobile-movewrap  .inner-move-mob > img {
+    width: 9px;
+    height: 100%;
+}
+.inner-distance {
+    position: relative;
+    margin-bottom: 26px;
+}
+.progress-bardd {
+    text-align: left;
+    margin-bottom: 6px;
+}
+.mobile-movewrap {
+     /* margin-top: -12px; */
+     position: absolute;
+     top: 12%;
+     transform: translateY(12%);
+}
+.mobile-movewrap  span.text-span {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+.inner-move-mob {
+    width: 40px;
+    position: relative;
+}
+.gifwrapp {
+    margin-bottom: 12px;
+}
+.gifwrapp > img {
+    width: 170px;
+    height: 100%;
+    object-fit: cover;
+}
+.hdngwrap h5 {
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+.hdngwrap h5 {
+    text-align: center;
+    color: #015790;
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+.hdngwrap.gifhdng-wrap h5 {
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+.logo-wrap.gif-wrap {
+    padding: 20px 20px 70px;
+}
+.logo-wrap.gif-wrap img {
+    width: 70px;
+    max-width: 100%;
+}
+.logo-wrap.gif-wrap img {
+    width: 70px;
+    max-width: 100%;
+}
+.bottomwrap.gif-btmwrap {
+    padding: 12px 27px 0px;
+    margin-top: 0;
+}
+.hdngwrap.gifhdng-wrap {
+    margin-bottom: 0px;
+}
+/* 12june */
+/* 14june */
+
+/* .inner-move-mob {
+    animation: zoomInOut 2s ease-in-out 1;
+}
+@keyframes zoomInOut {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.6);
+    }
+    100% {
+      transform: scale(1);
+    }
+  } */
+   /* blink */
+   .greenwarp > img {
+    width: 9px;
+}
+.greenwarp {
+    width: 40px;
+    position: relative;
+    animation: animate 1.5s linear infinite;
+}
+@keyframes animate { 
+    0% { 
+        opacity: 0.3; 
+    } 
+    30% { 
+        opacity: 0.7; 
+    } 
+
+    50% { 
+        opacity: 1; 
+    } 
+    80% { 
+        opacity: 0.8; 
+    } 
+
+    100% { 
+        opacity: 0.3; 
+    } 
+}  
+  /* blink */
+  /* other */
+  /* .greenwarp > img {
+    width: 9px;
+}
+  .greenwarp {
+    width: 40px;
+    position: relative;
+    animation: zoomInOut 2s ease-in-out infinite;
+  -webkit-animation: zoomInOut 2s ease-in-out infinite;
+  }
+  @keyframes zoomInOut {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.); 
+    }
+    100% {
+      transform: scale(1);
+    }
+  } */
+/* 14june */
+
+@media screen and (max-width: 768px) {
+    .inner-code {
+        max-width: 660px;
+    }
+    .generate-code-scan {
+        max-width: 100%;
+        padding: 60px 23px 60px;
+    }
+    .logo-wrap {
+        /* margin-bottom: 60px; */
+    }
+    }
+    @media screen and (max-width: 575px) {
+        .good-wrap p {
+            display: block;
+        }
+    }
+@media screen and (max-width: 480px) {
+   
+    .generate-code-scan {
+        max-width: 100%;
+        padding: 20px 23px 20px;
+        height: 100vh;
+    }
+    .logo-wrap {
+        margin-bottom: 20px;
+    }
+    .camera-wrapp video {
+        height: 310px;
+        object-fit: cover;
+    }
+}
