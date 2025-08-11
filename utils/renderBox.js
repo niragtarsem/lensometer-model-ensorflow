@@ -1,124 +1,132 @@
+// utils/renderBox.js
 import labels from "./labels.json";
 
-const focalLengthFinder = (knownDistance, knownWidth, widthInImage) => {
-  return (widthInImage * knownDistance) / knownWidth;
-};
- 
-const distanceFinder = (focalLength, knownWidth, widthInImage) => {
-  if (widthInImage && knownWidth) {
-    return (knownWidth * focalLength) / widthInImage;
-  } else {
-    return 0;
-  }
-};
+// --- tuning knobs ---
+const STABLE_FRAMES   = 2;        // consecutive frames of triangle before capture
+const COOLDOWN_MS     = 2000;     // min gap between any two captures
+const PHASE_GAP_MS    = 6000;     // wait after first capture before allowing the second
 
-const dimensions = {
-  'triangle': {
-    knownDistance: 50,
-    knownWidth: 0.9,
-    widthInPx: 25
-  },
-  'glass': {
-    knownDistance: 25,
-    knownWidth: 15,
-    widthInPx: 288
-  }
-}
-
-let imageCaptured = {
-  with_glass_image: false,
-  with_glass_image: false
+// module-scope state (persists while page is loaded)
+let captured = {
+  without_glass_image: false,
+  with_glass_image:    false,
 };
-let klassCoardinates = {};
-export const renderBoxes = (
+let stable = { triangle: 0 };
+let lastCaptureAt = 0;
+let phase1DoneAt  = 0;
+
+export function renderBoxes(
   canvasRef,
-  classThreshold,
+  threshold,
   boxes_data,
   scores_data,
   classes_data,
-  ratios,
-  captureImage,
-  setDistance
-) => {
+  ratios,              // [xRatio, yRatio] from detect.js
+  captureImage,        // fn(type)
+  setDistance,         // optional UI update
+  onLog = () => {}     // optional logger
+) {
   const ctx = canvasRef.getContext("2d");
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clean canvas
+  const W = canvasRef.width, H = canvasRef.height;
+  const [xRatio = 1, yRatio = 1] = Array.isArray(ratios) ? ratios : [1, 1];
 
-  console.log(ctx.canvas.width,'width>>>>>>>>>>>>',ctx.canvas.height,'height>>>>>>>>>>')
+  ctx.clearRect(0, 0, W, H);
 
- 
-  for(let i = 0; i < scores_data.length; ++i) {
-    const score_data = scores_data[i].slice(0, 4);
-    for(let j = 0; j < score_data.length; ++j) {
-      if (score_data[j] > classThreshold) {
-        const klass = labels[i == 0 ? (classes_data[i][j] + 4) : classes_data[i][j]];
+  // what we saw this frame
+  let seenTriangle = false;
+  let bestScore    = 0;
+  let drawn        = 0;
 
-        let [x1, y1, x2, y2] = boxes_data[i].slice(j * 4, (j + 1) * 4);
-        x1 *= canvasRef.width * ratios[0];
-        x2 *= canvasRef.width * ratios[0];
-        y1 *= canvasRef.height * ratios[1];
-        y2 *= canvasRef.height * ratios[1];
-        klassCoardinates[klass] = {x1, y1, x2, y2};
+  const drawSet = (boxes, scores, classes) => {
+    if (!boxes || !scores) return;
+    const n = Math.min(Math.floor(boxes.length / 4), scores.length);
 
-        // Calculate the distance using the focal length and the current box width
-        const width = x2 - x1;
-        console.log(width,'sharan phone width>>>>>>>>>>')
-        const focalLength = focalLengthFinder(dimensions[klass]?.knownDistance, dimensions[klass]?.knownWidth, dimensions[klass]?.widthInPx);
+    for (let i = 0; i < n; i++) {
+      const s = scores[i];
+      if (s < (threshold ?? 0.15)) continue;
+      bestScore = Math.max(bestScore, s);
 
-        const distance = distanceFinder(focalLength, dimensions[klass]?.knownWidth, width).toFixed(2);
-        console.log(klass, distance, width, '====================rendor box')
-        if(klass === 'glass') {
-          setDistance({
-            model: 'glass',
-            distance: distance
-          })
-        } else if(klass === 'triangle' && !klassCoardinates['glass']?.x1) {
-          setDistance({
-            model: 'triangle',
-            distance: distance
-          })
-        }
-        console.log(klassCoardinates['left'], klassCoardinates['right'], klass, "===============")
-        if(klassCoardinates['left'] && klassCoardinates['right'] && klass === 'glass' && distance > 24 && distance < 28) {
-          let lineColor = ['red', 'blue'];
-          const coordinates = [klassCoardinates['left'], klassCoardinates['right']];
-          for(let i = 0; i < coordinates.length; ++i) {
-            x1 = coordinates[i].x1;
-            x2 = coordinates[i].x2;
-            y1 = coordinates[i].y1;
-            y2 = coordinates[i].y2;
-            const centerX = (x1 + x2) / 2;
-            const centerY = (y1 + y2) / 2;
-              // Calculate the dimensions of the + sign
-              const lineLength = Math.min(x2 - x1, y2 - y1) / 2; // Half the length of the smallest dimension
-              const halfLineLength = lineLength / 2;
-              // Draw the horizontal line of the +
-              ctx.strokeStyle = lineColor[i];
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(centerX - (halfLineLength + 15), centerY);
-              ctx.lineTo(centerX + (halfLineLength + 15), centerY);
-              ctx.stroke();
-  
-              // Draw the vertical line of the +
-              ctx.beginPath();
-              ctx.moveTo(centerX, centerY - (halfLineLength + 15));
-              ctx.lineTo(centerX, centerY + (halfLineLength + 15));
-              ctx.stroke();
-          }
-          console.log(klassCoardinates['star'] && klassCoardinates['star'].x1 && Math.abs(klassCoardinates['star'].x1 - klassCoardinates['left'].x1),'cordinate - 1 left here>>>>>>>>>>>>>>>>>>>>>>>>>')
-          console.log(klassCoardinates['won'] && klassCoardinates['won'].x1 && Math.abs(klassCoardinates['won'].x1 - klassCoardinates['right'].x1),'cordinnate-2 right >>>>>>>>>>>>>>>>>>>>>>')
-          if(imageCaptured['without_glass_image'] && !imageCaptured['with_glass_image'] && ((klassCoardinates['star'] && klassCoardinates['star'].x1 && Math.abs(klassCoardinates['star'].x1 - klassCoardinates['left'].x1) <= 8) && (klassCoardinates['won'] && klassCoardinates['won'].x1 && Math.abs(klassCoardinates['won'].x1 - klassCoardinates['right'].x1) <= 8))) {
-            captureImage('with_glass_image');
-            imageCaptured['with_glass_image'] = true;
-            break;
-          }
-        } else if(klass === 'triangle' && distance > 48 && distance < 52 && !imageCaptured['without_glass_image']) {
-          captureImage('without_glass_image')
-          imageCaptured['without_glass_image'] = true;
-        }
+      const clsId = classes?.[i] ?? 0;
+      const klass = labels?.[clsId] ?? `cls_${clsId}`;
+
+      // coords
+      let x1 = boxes[i*4+0], y1 = boxes[i*4+1], x2 = boxes[i*4+2], y2 = boxes[i*4+3];
+      const normalized = Math.max(x1, y1, x2, y2) <= 1.5;
+      if (normalized) { x1 *= W; x2 *= W; y1 *= H; y2 *= H; }
+      else { x1 /= xRatio; x2 /= xRatio; y1 /= yRatio; y2 /= yRatio; }
+
+      const bx = Math.max(0, Math.min(W, x1));
+      const by = Math.max(0, Math.min(H, y1));
+      const bw = Math.max(0, Math.min(W, x2) - bx);
+      const bh = Math.max(0, Math.min(H, y2) - by);
+
+      // draw
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(0,255,0,0.9)";
+      ctx.strokeRect(bx, by, bw, bh);
+      const label = `${klass} ${s.toFixed(2)}`;
+      ctx.fillStyle = "rgba(0,0,0,0.6)";
+      const padH = 16, textW = 6 * label.length + 8;
+      ctx.fillRect(bx, Math.max(0, by - padH), textW, padH);
+      ctx.fillStyle = "#0f0"; ctx.font = "12px sans-serif";
+      ctx.fillText(label, bx + 4, Math.max(12, by - 4));
+
+      // optional: expose a proxy “distance” (here: px width) to your UI
+      if (klass === "triangle" && setDistance) {
+        setDistance({ model: "triangle", distance: +bw.toFixed(2) });
       }
-    }
-  }
-};
 
- 
+      if (klass === "triangle") seenTriangle = true;
+
+      drawn++;
+    }
+  };
+
+  for (let k = 0; k < boxes_data.length; k++) {
+    drawSet(boxes_data[k], scores_data[k], classes_data?.[k]);
+  }
+
+  onLog(`[render] drawn=${drawn} best=${bestScore.toFixed(3)} triangle=${seenTriangle}`);
+
+  // ---- capture logic (triangle-driven only) ----
+  const now = Date.now();
+  const cooledDown = now - lastCaptureAt > COOLDOWN_MS;
+
+  if (seenTriangle) stable.triangle++; else stable.triangle = 0;
+  onLog(`[cap] triangle stable=${stable.triangle}/${STABLE_FRAMES} cooled=${cooledDown}`);
+
+  // Phase 1: capture WITHOUT GLASS
+  if (!captured.without_glass_image) {
+    if (stable.triangle >= STABLE_FRAMES && cooledDown) {
+      captured.without_glass_image = true;
+      lastCaptureAt = now;
+      phase1DoneAt  = now;
+      onLog("📸 capturing: without_glass_image");
+      captureImage?.("without_glass_image");
+      stable.triangle = 0; // reset so phase 2 requires stability again
+    }
+    return; // don't attempt phase 2 yet
+  }
+
+  // Phase 2: after a grace period, capture WITH GLASS on triangle again
+  const phaseGapOk = now - phase1DoneAt > PHASE_GAP_MS;
+  if (!captured.with_glass_image && phaseGapOk) {
+    if (stable.triangle >= STABLE_FRAMES && cooledDown) {
+      captured.with_glass_image = true;
+      lastCaptureAt = now;
+      onLog("📸 capturing: with_glass_image");
+      captureImage?.("with_glass_image");
+      stable.triangle = 0;
+    }
+  } else if (!phaseGapOk) {
+    onLog(`[cap] waiting phase gap… ${(PHASE_GAP_MS - (now - phase1DoneAt))}ms`);
+  }
+}
+
+// Optional helper if you ever need to restart the flow:
+export function resetCaptureState() {
+  captured = { without_glass_image: false, with_glass_image: false };
+  stable = { triangle: 0 };
+  lastCaptureAt = 0;
+  phase1DoneAt  = 0;
+}
