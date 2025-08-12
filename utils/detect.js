@@ -1,42 +1,58 @@
 import * as tf from "@tensorflow/tfjs";
 import { renderBoxes } from "./renderBox";
 
-/* ---------- helpers ---------- */
+// FIXED: Correct labels mapping that matches your model training order
+// Make sure this matches EXACTLY how your model was trained
+const LABELS_MAP = {
+  0: "left_square",
+  1: "right_square",
+  2: "triangle",
+  3: "glass",
+  4: "left_circle",
+  5: "right_circle"
+};
 
+// FIXED: Function to get proper label names
+function getClassLabel(classId) {
+  if (LABELS_MAP[classId] !== undefined) {
+    return LABELS_MAP[classId];
+  }
+
+
+
+  // Handle unexpected class IDs by mapping them to our 6 classes
+  const mappedId = classId % 6;
+  return LABELS_MAP[mappedId] || `unknown_${classId}`;
+}
+
+/* ---------- helpers ---------- */
 function parseInputSpec(shape) {
-  // Handles rank-3 and rank-4 shapes
   if (Array.isArray(shape)) {
     if (shape.length === 4) {
-      const channelsFirst = shape[1] === 3 && shape[3] !== 3; // [1,3,H,W]
+      const channelsFirst = shape[1] === 3 && shape[3] !== 3;
       const H = channelsFirst ? shape[2] : shape[1];
       const W = channelsFirst ? shape[3] : shape[2];
       return { rank: 4, H, W, channelsFirst };
     }
     if (shape.length === 3) {
-      const channelsFirst = shape[0] === 3 && shape[2] !== 3; // [3,H,W] or [H,W,3]
+      const channelsFirst = shape[0] === 3 && shape[2] !== 3;
       const H = channelsFirst ? shape[1] : shape[0];
       const W = channelsFirst ? shape[2] : shape[1];
       return { rank: 3, H, W, channelsFirst };
     }
   }
-  // Fallback
-  return { rank: 4, H: 320, W: 320, channelsFirst: false };
+  return { rank: 4, H: 640, W: 640, channelsFirst: false };
 }
 
-// SSR-safe pad canvas
 function createPadCanvas() {
-  if (typeof window === "undefined" || typeof document === "undefined") {
-    throw new Error("pad canvas requested during SSR");
-  }
   const c = document.createElement("canvas");
-  const ctx = c.getContext("2d");
-  return { canvas: c, ctx };
+  return { canvas: c, ctx: c.getContext("2d") };
 }
 
 function buildInput(video, H, W, channelsFirst, withBatch, padCanvas, padCtx) {
   const vw = video.videoWidth || 0;
   const vh = video.videoHeight || 0;
-  const maxSize = Math.max(vw, vh);
+  const maxSize = Math.max(vw, vh) || Math.max(H, W);
 
   if (padCanvas.width !== maxSize) padCanvas.width = maxSize;
   if (padCanvas.height !== maxSize) padCanvas.height = maxSize;
@@ -44,175 +60,277 @@ function buildInput(video, H, W, channelsFirst, withBatch, padCanvas, padCtx) {
   padCtx.clearRect(0, 0, maxSize, maxSize);
   padCtx.drawImage(video, 0, 0, vw, vh);
 
-  const xRatio = maxSize / vw;
-  const yRatio = maxSize / vh;
+  const xRatio = maxSize / W;
+  const yRatio = maxSize / H;
 
   const tensor = tf.tidy(() => {
-    let img = tf.browser.fromPixels(padCanvas);     // [max,max,3]
+    let img = tf.browser.fromPixels(padCanvas);
     img = tf.image.resizeBilinear(img, [H, W]).toFloat().div(255);
     if (channelsFirst) {
-      img = tf.transpose(img, [2, 0, 1]);           // [3,H,W]
-      return withBatch ? img.expandDims(0) : img;   // [1,3,H,W] or [3,H,W]
+      img = tf.transpose(img, [2, 0, 1]);
+      return withBatch ? img.expandDims(0) : img;
     }
-    // NHWC
-    return withBatch ? img.expandDims(0) : img;     // [1,H,W,3] or [H,W,3]
+    return withBatch ? img.expandDims(0) : img;
   });
 
   return { tensor, xRatio, yRatio };
 }
 
 async function tryExecute(net, input) {
-  let out;
-  try {
-    out = await net.executeAsync(input);
-    return out;
-  } finally {
-    // caller disposes outputs; input disposed by caller
-  }
+  return await net.executeAsync(input);
 }
 
-async function extractDetections(res) {
-  const [boxesT, scoresT, classesT] = res.slice(0, 3);
-  const boxes = await boxesT.data();
-  const hasAny = boxes.some((v) => v !== 0);
-  if (!hasAny) return null;
-  const scores = await scoresT.data();
-  const classes = classesT ? await classesT.data() : null;
+// FIXED: Complete rewrite of detection extraction for YOLOv8 TensorFlow.js format
+export async function extractDetections(res, threshold = 0.25, inputW = 640, inputH = 640) {
+  console.log("=== DETECTION EXTRACTION DEBUG ===");
+
+  const outputs = Array.isArray(res) ? res : [res];
+  console.log("Number of outputs:", outputs.length);
+  console.log("Output shape:", outputs[0]?.shape);
+
+  if (outputs.length === 0) {
+    console.log("No outputs from model");
+    return { boxes: [], scores: [], classes: [] };
+  }
+
+  // Get the output tensor
+  const output = outputs[0];
+  const outputData = await output.data();
+  const outputShape = output.shape;
+
+  console.log("Output tensor shape:", outputShape);
+  console.log("Output data length:", outputData.length);
+
+  // For YOLOv8 with 6 classes: expected shape is [1, 11, 8400]
+  // 11 = 4 (bbox) + 6 (classes) + 1 (objectness, sometimes)
+  if (outputShape.length !== 3) {
+    console.error("Unexpected output shape:", outputShape);
+    return { boxes: [], scores: [], classes: [] };
+  }
+
+  const [batchSize, channels, anchors] = outputShape;
+  console.log(`Batch: ${batchSize}, Channels: ${channels}, Anchors: ${anchors}`);
+
+  // Determine the format based on channels
+  const numClasses = 6;
+  const expectedChannels = 4 + numClasses; // 10 for bbox + classes
+  const hasObjectness = channels === (4 + numClasses + 1); // 11 if objectness included
+
+  console.log(`Expected channels: ${expectedChannels}, Has objectness: ${hasObjectness}`);
+
+  const boxes = [];
+  const scores = [];
+  const classes = [];
+
+  // Process each anchor point
+  for (let i = 0; i < anchors; i++) {
+    // Extract data for this anchor
+    const cx = outputData[i] || 0; // center x
+    const cy = outputData[anchors + i] || 0; // center y  
+    const w = outputData[2 * anchors + i] || 0; // width
+    const h = outputData[3 * anchors + i] || 0; // height
+
+    // Extract class scores
+    const classScores = [];
+    const startIdx = hasObjectness ? 5 : 4; // Skip objectness if present
+
+    for (let c = 0; c < numClasses; c++) {
+      const scoreIdx = (startIdx + c) * anchors + i;
+      classScores.push(outputData[scoreIdx] || 0);
+    }
+
+    // Find the class with highest confidence
+    let maxScore = -1;
+    let classId = 0;
+
+    for (let c = 0; c < classScores.length; c++) {
+      if (classScores[c] > maxScore) {
+        maxScore = classScores[c];
+        classId = c;
+      }
+    }
+
+    // Apply objectness score if present
+    if (hasObjectness) {
+      const objectness = outputData[4 * anchors + i] || 0;
+      maxScore = maxScore * objectness; // Multiply class score by objectness
+    }
+
+    // Filter by threshold
+    if (maxScore >= threshold) {
+      // Convert normalized coordinates to pixel coordinates
+      const x1 = (cx - w / 2) * inputW;
+      const y1 = (cy - h / 2) * inputH;
+      const x2 = (cx + w / 2) * inputW;
+      const y2 = (cy + h / 2) * inputH;
+
+      // Ensure valid bounding box
+      if (x2 > x1 && y2 > y1 && w > 0 && h > 0) {
+        boxes.push(x1, y1, x2, y2);
+        scores.push(maxScore);
+        classes.push(classId);
+
+        const className = getClassLabel(classId);
+        console.log(`Valid detection: ${className} (${(maxScore * 100).toFixed(1)}%) at [${x1.toFixed(1)}, ${y1.toFixed(1)}, ${x2.toFixed(1)}, ${y2.toFixed(1)}]`);
+      }
+    }
+  }
+
+  console.log(`Total detections above threshold: ${boxes.length / 4}`);
+  console.log(`Threshold used: ${(threshold * 100).toFixed(1)}%`);
+
   return { boxes, scores, classes };
 }
 
 function disposeAll(o) {
   if (!o) return;
-  if (o.dispose) { try { o.dispose(); } catch {} return; }
-  if (Array.isArray(o)) o.forEach((t) => { try { t?.dispose?.(); } catch {} });
-  else if (typeof o === "object") Object.values(o).forEach((t) => { try { t?.dispose?.(); } catch {} });
+  if (o.dispose) {
+    try { o.dispose(); } catch { }
+    return;
+  }
+  if (Array.isArray(o)) {
+    o.forEach((t) => {
+      try { t?.dispose?.(); } catch { }
+    });
+  } else if (typeof o === "object") {
+    Object.values(o).forEach((t) => {
+      try { t?.dispose?.(); } catch { }
+    });
+  }
 }
 
 /* ---------- main loop ---------- */
-
 export const detectVideo = (
   vidSource,
-  model,               // { net, inputShape }
+  model,
   classThreshold,
   canvasRef,
-  ocModel,             // can be null now
+  ocModel,
   captureImage,
   setDistance,
-  onLog = () => {}
+  onLog = () => { }
 ) => {
-  if (typeof window === "undefined") return;
-
   const specMain = parseInputSpec(model?.inputShape || model?.net?.inputs?.[0]?.shape);
-  const specOc   = ocModel?.net ? parseInputSpec(ocModel?.inputShape || ocModel?.net?.inputs?.[0]?.shape) : null;
-
-  let pad;
-  try { pad = createPadCanvas(); }
-  catch (e) { onLog(`[detect] pad canvas error: ${e?.message || e}`); return; }
-
-  const ctx = canvasRef.getContext("2d");
+  const pad = createPadCanvas();
+  let lastTime = performance.now();
   let frameCount = 0;
+  let fps = 0;
+  let isProcessing = false; // Prevent overlapping processing
+
+  // Cache canvas context
+  const ctx = canvasRef.getContext("2d");
+
+  console.log("=== DETECTION LOOP STARTED ===");
+  console.log("Model input spec:", specMain);
+  console.log("Model shape:", model?.net?.inputs?.[0]?.shape);
 
   const step = async () => {
+    // Skip frame if still processing previous one
+    if (isProcessing) {
+      requestAnimationFrame(step);
+      return;
+    }
+
+    const now = performance.now();
+    frameCount++;
+
+    if (now - lastTime >= 1000) {
+      fps = frameCount;
+      frameCount = 0;
+      lastTime = now;
+    }
+
     try {
-      if (!vidSource || (!vidSource.videoWidth && !vidSource.srcObject)) {
-        try { ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); } catch {}
+      if (!vidSource?.videoWidth) {
+        ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+        requestAnimationFrame(step);
         return;
       }
 
-      const vw = vidSource.videoWidth, vh = vidSource.videoHeight;
-      if (canvasRef.width !== vw) canvasRef.width = vw;
-      if (canvasRef.height !== vh) canvasRef.height = vh;
+      isProcessing = true;
+      const vw = vidSource.videoWidth;
+      const vh = vidSource.videoHeight;
 
-      // overlay only
-      ctx.clearRect(0, 0, vw, vh);
+      // Only resize canvas if dimensions changed
+      if (canvasRef.width !== vw || canvasRef.height !== vh) {
+        canvasRef.width = vw;
+        canvasRef.height = vh;
+      }
 
       let boxes_data = [];
       let scores_data = [];
       let classes_data = [];
       let xRatioMain, yRatioMain;
 
-      // --- (optional) ocModel — skipped when you pass null from web.jsx
-      if (specOc && ocModel?.net) {
-        try {
-          // preferred attempt only (batch + preferred layout). You can re-enable
-          // the flexible attempts later once main path works.
-          const builtOc = buildInput(vidSource, specOc.H, specOc.W, specOc.channelsFirst, specOc.rank !== 3, pad.canvas, pad.ctx);
-          const resOc = await tryExecute(ocModel.net, builtOc.tensor);
-          const detsOc = await extractDetections(resOc);
-          disposeAll(resOc); builtOc.tensor.dispose();
-          if (detsOc) {
-            boxes_data.push(detsOc.boxes);
-            scores_data.push(detsOc.scores);
-            classes_data.push(detsOc.classes);
-          }
-        } catch (e) {
-          onLog(`[detect] oc error: ${e?.message || e}`);
-        }
-      }
-
-      // --- main model (use its ratios for render)
+      // Main model inference
       try {
+        const inferenceStart = performance.now();
+
         const built = buildInput(vidSource, specMain.H, specMain.W, specMain.channelsFirst, true, pad.canvas, pad.ctx);
-        xRatioMain = built.xRatio; yRatioMain = built.yRatio;
+        xRatioMain = built.xRatio;
+        yRatioMain = built.yRatio;
+
+        console.log("Input ratios:", { xRatio: xRatioMain, yRatio: yRatioMain });
 
         const res = await tryExecute(model?.net, built.tensor);
-        const dets = await extractDetections(res);
-        disposeAll(res); built.tensor.dispose();
 
-        if (dets) {
-          // Log the strongest score to see if threshold is blocking captures
-          const maxScore = Array.from(dets.scores || []).reduce((m, v) => (v > m ? v : m), 0);
-          onLog(`[detect] main maxScore=${maxScore.toFixed(3)} thr=${(classThreshold ?? 0).toFixed(2)}`);
+        // FIXED: Use correct extraction with better debugging
+        const dets = await extractDetections(res, classThreshold, specMain.W, specMain.H);
 
+        const inferenceTime = performance.now() - inferenceStart;
+
+        // Proper cleanup
+        disposeAll(res);
+        built.tensor.dispose();
+
+        if (dets && dets.scores.length > 0) {
           boxes_data.push(dets.boxes);
           scores_data.push(dets.scores);
           classes_data.push(dets.classes);
+
+          // Create debug message with proper labels
+          const detectionSummary = dets.classes.map((classId, idx) => {
+            const className = getClassLabel(classId);
+            const score = Math.round(dets.scores[idx] * 100);
+            return `${className}(${score}%)`;
+          }).join(', ');
+
+          onLog(`FPS: ${fps} | Inference: ${inferenceTime.toFixed(1)}ms | Detections: ${dets.scores.length} | ${detectionSummary}`);
         } else {
-          onLog(`[detect] main: no detections`);
+          onLog(`FPS: ${fps} | Inference: ${inferenceTime.toFixed(1)}ms | No detections above ${Math.round(classThreshold * 100)}%`);
         }
+
       } catch (e) {
-        onLog(`[detect] main error: ${e?.message || e}`);
+        console.error("Detection error:", e);
+        onLog(`Error: ${e.message}`);
       }
 
-      const xRatio = xRatioMain ?? 1;
-      const yRatio = yRatioMain ?? 1;
+      // FIXED: Pass proper ratios to renderBoxes
+      renderBoxes(
+        canvasRef,
+        classThreshold,
+        boxes_data,
+        scores_data,
+        classes_data,
+        [xRatioMain || 1, yRatioMain || 1],
+        captureImage,
+        setDistance,
+        getClassLabel, // Pass the label function
+        onLog
+      );
 
-      try {
-        renderBoxes(
-          canvasRef,
-          classThreshold,
-          boxes_data,
-          scores_data,
-          classes_data,
-          [xRatio, yRatio],
-          captureImage,
-          setDistance
-        );
-        if (frameCount % 15 === 0) onLog(`[detect] 💓 tick=${frameCount}`);
-      } catch (e) {
-        onLog(`[detect] render error: ${e?.message || e}`);
-      }
-
-      frameCount++;
     } catch (e) {
-      onLog(`[detect] loop error: ${e?.message || e}`);
+      console.error("Main loop error:", e);
+      onLog(`Loop error: ${e.message}`);
     } finally {
-      schedule();
+      isProcessing = false;
+      // Limit to 15 FPS to reduce CPU load
+      setTimeout(() => requestAnimationFrame(step), 67);
     }
   };
 
-  const schedule = () => {
-    const v = vidSource;
-    const hasRVFC =
-      typeof HTMLVideoElement !== "undefined" &&
-      HTMLVideoElement.prototype &&
-      "requestVideoFrameCallback" in HTMLVideoElement.prototype;
-    if (hasRVFC && v?.requestVideoFrameCallback) {
-      v.requestVideoFrameCallback(() => step());
-    } else {
-      requestAnimationFrame(() => step());
-    }
-  };
-
-  schedule();
+  step();
 };
+
+// Export the label function for use in other modules
+export { getClassLabel };

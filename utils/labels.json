@@ -1,10 +1,8 @@
 [
-    "left",
-    "right",
+    "left_square",
+    "right_square",
     "triangle",
     "glass",
-    "star",
-    "won",
-    "cross",
-    "snow"
+    "left_circle",
+    "right_circle"
 ]
